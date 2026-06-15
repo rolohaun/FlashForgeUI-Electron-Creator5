@@ -87,6 +87,7 @@ It works with everything from the latest Adventurer 5M / 5M Pro / AD5X to older 
 
 | Printer | Support | Material Station | Notes |
 | --- | --- | --- | --- |
+| **Creator 5** | Full | Yes (4 slots) | AD5X-compatible IFS flow |
 | **AD5X** | Full | Yes (4 slots) | Multi-material 3MF printing |
 | **Adventurer 5M Pro** | Full | No | Includes filtration control |
 | **Adventurer 5M** | Full | No | |
