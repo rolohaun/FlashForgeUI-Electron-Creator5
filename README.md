@@ -31,9 +31,9 @@ modern HTTP API.
 
 | Get Started | |
 | --- | --- |
-| **[Download Stable](https://github.com/Parallel-7/FlashForgeUI-Electron/releases/latest)** | Recommended for most users |
-| **[Download Latest Alpha](https://github.com/Parallel-7/FlashForgeUI-Electron/releases)** | Newest features, may be rough around the edges |
-| **[User Guide & Wiki](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki)** | Setup, pairing, and feature walkthroughs |
+| **[Creator 5 Fork Releases](https://github.com/rolohaun/FlashForgeUI-Electron-Creator5/releases)** | Use these builds for Creator 5 support when release assets are available |
+| **[Original Project Releases](https://github.com/Parallel-7/FlashForgeUI-Electron/releases)** | Upstream builds from the original project |
+| **[User Guide & Wiki](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki)** | Upstream setup, pairing, and feature walkthroughs |
 
 </div>
 
@@ -104,10 +104,12 @@ It works with everything from the latest Adventurer 5M / 5M Pro / AD5X to older 
 
 | Step | Instructions |
 | --- | --- |
-| **1. Download** | Grab the [latest release](https://github.com/Parallel-7/FlashForgeUI-Electron/releases/latest) for your platform |
-| **2. Install** | **Windows:** run the `.exe` installer<br>**macOS:** open the `.dmg` and drag to Applications<br>**Linux:** use the `.AppImage`, `.deb`, or `.rpm` package |
-| **3. Connect** | Launch the app, use auto-discovery or enter your printer's IP, and add the [pairing code](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/1.-Pairing-your-printer) if prompted |
-| **4. Configure** | Optional: set up [remote access](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/WebUI-Setup), [Discord alerts](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/Notifications), [Spoolman](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/Spoolman-Integration), and [custom cameras](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/Custom-Camera-Setup) |
+| **1. Download or build** | Check the [Creator 5 fork releases](https://github.com/rolohaun/FlashForgeUI-Electron-Creator5/releases). If no packaged release is available yet, build from source using the steps below. |
+| **2. Install on Windows** | Installer builds are named `FlashForgeUI-Setup-<version>.exe`. Run the installer from your Downloads folder or from `dist\` after a local build. By default, the installed app is `C:\Users\<you>\AppData\Local\Programs\FlashForgeUI\FlashForgeUI.exe` unless you choose a different install folder. The installer also creates Start Menu and desktop shortcuts. |
+| **3. Use portable Windows build** | Portable builds are standalone `.exe` files in the release assets or in `dist\` after `pnpm build:win`. They do not need installation; run the portable `.exe` from the folder where you downloaded or built it. |
+| **4. Install on macOS or Linux** | macOS uses the `.dmg`: open it and drag `FlashForgeUI` into Applications. Linux uses the `.AppImage`, `.deb`, or `.rpm` package from the release assets or from `dist\` after a local build. |
+| **5. Connect printer** | Launch the app, use auto-discovery or enter your printer's IP, and add the [pairing code](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/1.-Pairing-your-printer) if prompted. Creator 5 should use the AD5X-compatible pairing and IFS flow in this fork. |
+| **6. Configure optional features** | Optional: set up [remote access](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/WebUI-Setup), [Discord alerts](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/Notifications), [Spoolman](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/Spoolman-Integration), and [custom cameras](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki/Custom-Camera-Setup). |
 
 Full setup walkthroughs and troubleshooting live in the **[Wiki](https://github.com/Parallel-7/FlashForgeUI-Electron/wiki)**.
 
@@ -119,27 +121,50 @@ Full setup walkthroughs and troubleshooting live in the **[Wiki](https://github.
 
 </div>
 
-This project uses [pnpm](https://pnpm.io/). To run this fork from source:
+This project uses [pnpm](https://pnpm.io/). Install Node.js LTS first, then enable pnpm:
 
-```bash
-pnpm install      # install dependencies
-pnpm build        # build main, renderer, and WebUI
-pnpm start        # launch the built Electron app
+```powershell
+corepack enable
+corepack prepare pnpm@10.23.0 --activate
+```
+
+Clone and run the app without creating an installer:
+
+```powershell
+git clone https://github.com/rolohaun/FlashForgeUI-Electron-Creator5.git
+cd FlashForgeUI-Electron-Creator5
+pnpm install
+pnpm build
+pnpm start
+```
+
+`pnpm start` launches the built Electron app directly from the project folder. It does not create an installed `.exe`.
+
+Create installable packages:
+
+```powershell
+pnpm build:win    # Windows installer and portable .exe in dist\
+pnpm build:mac    # macOS .dmg and .zip artifacts in dist\
+pnpm build:linux  # Linux .AppImage, .deb, and .rpm artifacts in dist\
+```
+
+After `pnpm build:win`, look in `dist\` for:
+
+```text
+dist\FlashForgeUI-Setup-<version>.exe  # Windows installer
+dist\<another FlashForgeUI .exe>       # portable executable; it is the .exe that is not the -Setup installer
+```
+
+After running the Windows installer, the default installed executable is:
+
+```text
+C:\Users\<you>\AppData\Local\Programs\FlashForgeUI\FlashForgeUI.exe
 ```
 
 For active development with hot reload:
 
-```bash
-pnpm install
+```powershell
 pnpm dev
-```
-
-Packaging commands:
-
-```bash
-pnpm build:win    # package a Windows installer
-pnpm build:mac    # package a macOS build
-pnpm build:linux  # package Linux artifacts
 ```
 
 <div align="center">
